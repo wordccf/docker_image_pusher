@@ -5,7 +5,6 @@ on:
   push:
     branches: [ main ]
 
-
 env:
   ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
   ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_NAME_SPACE }}"
@@ -29,7 +28,6 @@ jobs:
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
       with:
-
         root-reserve-mb: 2048
         swap-size-mb: 128
         remove-dotnet: 'true'
@@ -49,11 +47,13 @@ jobs:
         df -hT
         echo "=============================================================================="
 
+    # 【修改点 1】升级 actions/checkout 到 v5 以支持 Node.js 24
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
+    # 【修改点 2】升级 docker/setup-buildx-action 到 v4 以支持 Node.js 24
     - name: Docker Setup Buildx
-      uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@v4
 
     - name: Build and push image Aliyun
       run: |
